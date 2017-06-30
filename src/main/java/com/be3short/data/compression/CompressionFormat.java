@@ -1,4 +1,4 @@
-package bes.commons.data.compression;
+package com.be3short.data.compression;
 
 import java.util.regex.Pattern;
 

@@ -1,4 +1,4 @@
-package bes.commons.data.file.general;
+package com.be3short.data.file.general;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

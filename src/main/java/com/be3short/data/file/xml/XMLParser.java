@@ -1,4 +1,4 @@
-package bes.commons.data.file.xml;
+package com.be3short.data.file.xml;
 
 import java.io.File;
 import java.util.ArrayList;

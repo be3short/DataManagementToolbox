@@ -1,8 +1,7 @@
-package bes.commons.data.cloning;
+package com.be3short.data.cloning;
 
+import com.be3short.data.file.xml.XMLParser;
 import com.rits.cloning.Cloner;
-
-import bes.commons.data.file.xml.XMLParser;
 
 public class ObjectCloner
 {
