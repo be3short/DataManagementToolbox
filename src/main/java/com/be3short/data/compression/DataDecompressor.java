@@ -6,13 +6,20 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 import com.be3short.data.file.general.FileSystemInteractor;
+import com.be3short.data.file.xml.XMLParser;
 
 public class DataDecompressor
 {
@@ -62,5 +69,63 @@ public class DataDecompressor
 			badFile.printStackTrace();
 		}
 		return fileContent;
+	}
+
+	public static String decompressDataGZipString(byte[] string)
+	{
+		String fileContent = "";
+		try
+		{
+			InputStream input = new ByteArrayInputStream(string);
+			GZIPInputStream gzis = new GZIPInputStream(input);
+			InputStreamReader reader = new InputStreamReader(gzis, StandardCharsets.ISO_8859_1);
+			BufferedReader in = new BufferedReader(reader);
+
+			String readed;
+			while ((readed = in.readLine()) != null)
+			{
+				// System.out.println(readed);
+				fileContent += readed;
+			}
+			// System.out.println(fileContent);
+		} catch (Exception badFile)
+		{
+			badFile.printStackTrace();
+		}
+		return fileContent;
+	}
+
+	public static void unzipDirectory(String dir) throws IOException, IllegalArgumentException
+	{
+		// Check that the directory is a directory, and get its contents
+
+		// Create a stream to compress data and write it to the zipfile
+		ZipInputStream in = new ZipInputStream(new FileInputStream(dir));
+		ArrayList<File> filez = new ArrayList<File>();
+		ZipEntry entry = in.getNextEntry();
+		while (entry != null)
+		{
+			byte[] bytes = new byte[(int) entry.getSize()];
+			in.read(bytes);
+			System.out.println(XMLParser.serializeObject(bytes));
+			System.out.println(entry.getName());
+			entry = in.getNextEntry();
+		}
+		// // Loop through all entries in the directory
+		// for (int i = 0; i < entries.length; i++)
+		// {
+		// File f = new File(d, entries[i]);
+		// if (f.isDirectory())
+		// continue; // Don't zip sub-directories
+		// FileInputStream in = new FileInputStream(f); // Stream to read file
+		// ZipEntry entry = new ZipEntry(f.getName()); // Make a ZipEntry
+		// out.putNextEntry(entry); // Store entry
+		// while ((bytes_read = in.read(buffer)) != -1)
+		// // Copy bytes
+		// out.write(buffer, 0, bytes_read);
+		// in.close(); // Close input stream
+		// }
+		// // When we're done with the whole loop, close the output stream
+		// out.close();
 	}
 }
